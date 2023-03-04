@@ -10,9 +10,8 @@ for lists in l[0]:
 
 vertexNeighbour = {}
 ListOfNeighbours = []
-neighbourColor = []
+
 vertexColors = []
-sortedNeighbourColors = []
 sortedFinalResult = []
 result = []
 newList = []
@@ -21,8 +20,13 @@ newList = []
 def color_refinement(l):
     newResult = []
     length = len(graph.vertices)
+    print(length)
     no_of_graphs = len(l)
-    no_of_vertices = length / no_of_graphs
+    print(no_of_graphs)
+    no_of_vertices = length // no_of_graphs
+    print(no_of_vertices)
+
+
 
     for vertex in graph.vertices:
         vertex.colornum = vertex.degree  # assigning vertex color with respect to its degree
@@ -32,7 +36,8 @@ def color_refinement(l):
     newResult.append(vertexColors)
 
     while True:
-
+        sortedNeighbourColors = []
+        neighbourColor = []
         listOfNeighbours = list(vertexNeighbour.values())
 
         for n in listOfNeighbours:
@@ -55,16 +60,31 @@ def color_refinement(l):
             result.append([unique_lst[tuple(l)]])
         newResult = sum(result, [])
 
-
         if newResult in newList:
             break
         else:
             newList.append(newResult)
+        print('jfpafjpjca', len(newList))
+        print(newList)
 
         for i in range(0, len(graph.vertices)):
          graph.vertices[i].colornum = newResult[i]
 
-    print("new result", newResult)
+    sublists = []
+    for i in range(0, len(newResult), no_of_vertices):
+        sublist = newResult[i:i + no_of_vertices]
+        sublists.append(sublist)
+    result = []
+    for i, l1 in enumerate(sublists):
+        matches = [i]
+        for j, l2 in enumerate(sublists[i + 1:], start=i + 1):
+            if set(l1) == set(l2):
+                matches.append(j)
+        if len(matches) > 1:
+            result.append(matches)
+    for lists in result:
+        print(lists)
+    #print("new result", newResult)
 
     return graph
 color_refinement(l[0]), f
